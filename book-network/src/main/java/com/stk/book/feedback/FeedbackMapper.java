@@ -1,0 +1,27 @@
+package com.stk.book.feedback;
+
+import com.stk.book.book.Book;
+import org.springframework.stereotype.Service;
+
+import java.util.Objects;
+
+@Service
+public class FeedbackMapper {
+    public Feedback toFeedback(FeedbackRequest request) {
+        return Feedback.builder()
+                .note(request.note())
+                .book(Book.builder()
+                        .id(request.bookId())
+                        .build())
+                .comment(request.comment())
+                .build();
+    }
+
+    public FeedbackResponse toFeedbackResponse(Feedback feedback, Integer userId) {
+        return FeedbackResponse.builder()
+                .note(feedback.getNote())
+                .comment(feedback.getComment())
+                .ownFeedback(Objects.equals(feedback.getCreatedBy(), userId))
+                .build();
+    }
+}
